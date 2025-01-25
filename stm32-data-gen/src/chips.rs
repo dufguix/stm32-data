@@ -98,6 +98,10 @@ fn chip_name_from_package_name(x: &str) -> String {
         (regex!("^(STM32H5....).xQ$"), "$1"),
         (regex!("^(STM32WBA....).x$"), "$1"),
         (regex!("^(STM32......).x$"), "$1"),
+        (regex!("^(STM32C0....).xN$"), "$1"),
+        (regex!("^(STM32G4....).xZ$"), "$1"),
+        (regex!("^(STM32N6....).xQ$"), "$1"),
+        (regex!("^(STM32U3....).x[GQ]$"), "$1"),
     ];
 
     regexes
@@ -210,11 +214,31 @@ pub fn parse_groups() -> Result<(HashMap<String, Chip>, Vec<ChipGroup>), anyhow:
 }
 
 static NOPELIST: &[&str] = &[
+    // TODO add irq : Unknown signal ECC for peri RAMECC, known=["GLOBAL"], parts=["ECC_IRQn", "Y,nV1", "RAMECC", "HAL_RAMECC_IRQHandler", ""]
+    "STM32N6",
+    "STM32H7",
+    // TODO couldn't find nvic.
+    "STM32WBA5M",
+    // TODO header: can't parse: "RRM_CBIAS0_HW_TRIM_OUT _HW_CBIAS_IPTAT_TRIM_Msk"
+    "STM32WB05",
+    // TODO header: could not get header
+    "STM32WB06",
+    "STM32WB07",
+    "STM32WB09",
+    // TODO set rcc
+    "STM32U37",
+    "STM32U38",
+    "STM32WL33",
     // Not supported, not planned unless someone wants to do it.
     "STM32MP",
     // Does not exist in ST website. No datasheet, no RM.
     "STM32GBK",
     "STM32L485",
+    "STM32C051", //check after Q1 2025
+    "STM32C091", //check after Q1 2025
+    "STM32C092", //check after Q1 2025
+    "STM32G411",
+    "STM32G414",
     // STM32WxM modules. These are based on a chip that's supported on its own,
     // not sure why we want a separate target for it.
     "STM32WL5M",

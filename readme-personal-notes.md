@@ -1,9 +1,10 @@
-# Trying to get STM32C071 working
+# Trying to get STM32C071CB working
 
 Check:
 - [stm32 hal](https://github.com/embassy-rs/embassy/blob/main/embassy-stm32/README.md)
 - [stm32 data](https://github.com/embassy-rs/stm32-data)
 - [stm32 sources](https://github.com/embassy-rs/stm32-data-sources)
+- [stm32 data gen](https://github.com/embassy-rs/stm32-data-generated)
 
 Notes:
 - clone https://github.com/embassy-rs/stm32-data
@@ -26,10 +27,16 @@ Notes:
 - now ./d gen complete. Take a look at ./build/data for generated json files.
     - check them, compare with others
 - run stm32-metapac-gen
+    - cargo run --release --bin stm32-metapac-gen
     - output the PAC in ./build/stm32-metapac
-- clone embassy-stm32
-- can edit embassy-stm32/Cargo.toml
-    - change stm32-metapac in dependencies (in two places) to path = "...." to point to the one you just created
+- clone embassy
+- edit embassy-stm32/Cargo.toml
+    - change stm32-metapac in dependencies AND build dependencies to path = "...." to point to the one you just created
+    stm32-metapac = { path ="../../stm32-data/build/stm32-metapac", default-features = false, features = ["metadata"]}
     - add cargo features for the new chips
+    stm32c071cb = [ "stm32-metapac/stm32c071cb" ]
 - try to build a new project for the new chip
     you might get build failures due to stuff being wrong in the jsons, in which case you have to fix it (usually in stm32-data-gen), regenerate jsons, regenerate metapac, try building again
+  TODO:
+  the trait `RccPeripheral` is not implemented for `peripherals::SPI2`
+  the trait `RccPeripheral` is not implemented for `peripherals::TIM2`
